@@ -1,0 +1,111 @@
+<UserControl x:Class="ImpulseLive.WPF.Views.ResultView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             mc:Ignorable="d"
+             d:DesignHeight="450" d:DesignWidth="800">
+    <Grid Background="#2C3E50">
+        <StackPanel Margin="40">
+            <TextBlock Text="结算分析" FontSize="48" FontWeight="Bold" Foreground="#ECF0F1" TextAlignment="Center" Margin="0,0,0,40"/>
+            
+            <!-- 玩家统计 -->
+            <Border Background="#34495E" CornerRadius="10" Padding="20">
+                <StackPanel>
+                    <TextBlock Text="玩家数据" FontSize="24" FontWeight="Bold" Foreground="#ECF0F1" Margin="0,0,0,15"/>
+                    <Grid>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="*"/>
+                            <ColumnDefinition Width="*"/>
+                            <ColumnDefinition Width="*"/>
+                        </Grid.ColumnDefinitions>
+                        <StackPanel Grid.Column="0">
+                            <TextBlock Text="剩余资金" FontSize="18" Foreground="#BDC3C7" Margin="0,0,0,5"/>
+                            <TextBlock Text="{Binding Player.Money, StringFormat='${0}'}" FontSize="24" Foreground="#2ECC71" Margin="0,0,0,15"/>
+                            <TextBlock Text="理性值" FontSize="18" Foreground="#BDC3C7" Margin="0,0,0,5"/>
+                            <TextBlock Text="{Binding Player.Rationality}" FontSize="24" Foreground="#3498DB"/>
+                        </StackPanel>
+                        <StackPanel Grid.Column="1">
+                            <TextBlock Text="购买次数" FontSize="18" Foreground="#BDC3C7" Margin="0,0,0,5"/>
+                            <TextBlock Text="{Binding Player.BuyCount}" FontSize="24" Foreground="#E74C3C" Margin="0,0,0,15"/>
+                            <TextBlock Text="犹豫次数" FontSize="18" Foreground="#BDC3C7" Margin="0,0,0,5"/>
+                            <TextBlock Text="{Binding Player.HesitateCount}" FontSize="24" Foreground="#F39C12"/>
+                        </StackPanel>
+                        <StackPanel Grid.Column="2">
+                            <TextBlock Text="拒绝次数" FontSize="18" Foreground="#BDC3C7" Margin="0,0,0,5"/>
+                            <TextBlock Text="{Binding Player.RefuseCount}" FontSize="24" Foreground="#2ECC71" Margin="0,0,0,15"/>
+                            <TextBlock Text="欲望值" FontSize="18" Foreground="#BDC3C7" Margin="0,0,0,5"/>
+                            <TextBlock Text="{Binding Player.Desire}" FontSize="24" Foreground="#E74C3C"/>
+                        </StackPanel>
+                    </Grid>
+                </StackPanel>
+            </Border>
+
+            <!-- 行为统计 -->
+            <Border Background="#34495E" CornerRadius="10" Padding="20" Margin="0,20,0,0">
+                <StackPanel>
+                    <TextBlock Text="行为统计" FontSize="24" FontWeight="Bold" Foreground="#ECF0F1" Margin="0,0,0,15"/>
+                    <Grid>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="*"/>
+                            <ColumnDefinition Width="*"/>
+                            <ColumnDefinition Width="*"/>
+                        </Grid.ColumnDefinitions>
+                        <StackPanel Grid.Column="0">
+                            <TextBlock Text="限时购买" FontSize="18" Foreground="#BDC3C7" Margin="0,0,0,5"/>
+                            <TextBlock Text="{Binding Stats.BuyUnderTimePressure}" FontSize="24" Foreground="#E74C3C"/>
+                        </StackPanel>
+                        <StackPanel Grid.Column="1">
+                            <TextBlock Text="从众购买" FontSize="18" Foreground="#BDC3C7" Margin="0,0,0,5"/>
+                            <TextBlock Text="{Binding Stats.BuyHighSold}" FontSize="24" Foreground="#E74C3C"/>
+                        </StackPanel>
+                        <StackPanel Grid.Column="2">
+                            <TextBlock Text="分期使用" FontSize="18" Foreground="#BDC3C7" Margin="0,0,0,5"/>
+                            <TextBlock Text="{Binding Stats.InstallmentUsed}" FontSize="24" Foreground="#E74C3C"/>
+                        </StackPanel>
+                    </Grid>
+                </StackPanel>
+            </Border>
+
+            <!-- 分析结论 -->
+            <Border Background="#34495E" CornerRadius="10" Padding="20" Margin="0,20,0,0">
+                <StackPanel>
+                    <TextBlock Text="心理分析" FontSize="24" FontWeight="Bold" Foreground="#ECF0F1" Margin="0,0,0,15"/>
+                    <ItemsControl ItemsSource="{Binding AnalysisResults}">
+                        <ItemsControl.ItemTemplate>
+                            <DataTemplate>
+                                <TextBlock Text="{Binding}" FontSize="18" Foreground="#F39C12" Margin="5"/>
+                            </DataTemplate>
+                        </ItemsControl.ItemTemplate>
+                    </ItemsControl>
+                </StackPanel>
+            </Border>
+
+            <!-- 社会意义 -->
+            <Border Background="#34495E" CornerRadius="10" Padding="20" Margin="0,20,0,0">
+                <StackPanel>
+                    <TextBlock Text="社会意义" FontSize="24" FontWeight="Bold" Foreground="#ECF0F1" Margin="0,0,0,15"/>
+                    <TextBlock Text="在数字经济时代，直播带货通过话术、限时、从众等心理机制，
+                             对消费者决策产生深远影响。理性消费需要我们保持清醒的头脑，
+                             避免被营销手段操控，做出真正符合自身需求的选择。" 
+                               FontSize="16" Foreground="#BDC3C7" TextWrapping="Wrap"/>
+                </StackPanel>
+            </Border>
+
+            <!-- 返回菜单按钮 -->
+            <Button Content="返回菜单" Command="{Binding ReturnToMenuCommand}" FontSize="24" Width="200" Height="60"
+                    Background="#3498DB" Foreground="White" BorderBrush="Transparent" FontWeight="Bold" HorizontalAlignment="Center" Margin="0,40,0,0">
+                <Button.Style>
+                    <Style TargetType="Button">
+                        <Style.Triggers>
+                            <Trigger Property="IsMouseOver" Value="True">
+                                <Setter Property="Background" Value="#2980B9"/>
+                                <Setter Property="Cursor" Value="Hand"/>
+                            </Trigger>
+                        </Style.Triggers>
+                    </Style>
+                </Button.Style>
+            </Button>
+        </StackPanel>
+    </Grid>
+</UserControl>

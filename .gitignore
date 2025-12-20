@@ -1,0 +1,22 @@
+# =====================
+# Visual Studio / WPF
+# =====================
+.vs/
+bin/
+obj/
+*.user
+*.suo
+*.cache
+*.log
+
+# Rider / CLion
+.idea/
+cmake-build-*/
+
+# .NET
+*.dll
+*.pdb
+
+# OS
+.DS_Store
+Thumbs.db
