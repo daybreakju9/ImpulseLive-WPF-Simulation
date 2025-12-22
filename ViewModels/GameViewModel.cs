@@ -6,15 +6,23 @@ using ImpulseLive.WPF.Services;
 
 namespace ImpulseLive.WPF.ViewModels
 {
+    /// <summary>
+    /// 游戏视图模型，负责管理游戏状态、处理用户交互和更新UI
+    /// 实现了INotifyPropertyChanged接口，支持数据绑定和UI自动更新
+    /// </summary>
     public class GameViewModel : INotifyPropertyChanged
     {
-        private GameState _currentState;
-        private int _remainingTime;
-        private int _round;
-        private DispatcherTimer _timer;
-        private bool _canHesitateInCurrentRound = true;
+        // 私有字段
+        private GameState _currentState;       // 当前游戏状态
+        private int _remainingTime;           // 当前商品的剩余时间
+        private int _round;                   // 当前回合数
+        private DispatcherTimer _timer;       // 倒计时计时器
+        private bool _canHesitateInCurrentRound = true; // 标记当前回合是否可以使用犹豫功能
         
-        // 用于直接绑定到按钮IsEnabled属性的属性
+        /// <summary>
+        /// 用于直接绑定到"加入购物车"按钮IsEnabled属性的属性
+        /// 控制每回合只能点击一次"加入购物车"按钮
+        /// </summary>
         public bool CanUseHesitate
         {
             get => _canHesitateInCurrentRound;
@@ -28,6 +36,9 @@ namespace ImpulseLive.WPF.ViewModels
             }
         }
 
+        /// <summary>
+        /// 当前游戏状态，用于控制不同视图的显示
+        /// </summary>
         public GameState CurrentState
         {
             get => _currentState;
@@ -36,12 +47,15 @@ namespace ImpulseLive.WPF.ViewModels
                 if (_currentState != value)
                 {
                     _currentState = value;
-                    // 触发PropertyChanged事件，通知UI更新
+                    // 触发PropertyChanged事件，通知UI更新视图显示
                     OnPropertyChanged(nameof(CurrentState));
                 }
             }
         }
 
+        /// <summary>
+        /// 玩家对象，包含玩家的资金、理性值、欲望值等属性
+        /// </summary>
         private Player _player;
         public Player Player
         {
@@ -56,6 +70,9 @@ namespace ImpulseLive.WPF.ViewModels
             }
         }
 
+        /// <summary>
+        /// 当前展示的商品对象
+        /// </summary>
         private Product _currentProduct;
         public Product CurrentProduct
         {
@@ -70,6 +87,9 @@ namespace ImpulseLive.WPF.ViewModels
             }
         }
 
+        /// <summary>
+        /// 行为统计对象，记录玩家在游戏中的各种行为数据
+        /// </summary>
         private BehaviorStats _stats;
         public BehaviorStats Stats
         {
@@ -84,6 +104,9 @@ namespace ImpulseLive.WPF.ViewModels
             }
         }
 
+        /// <summary>
+        /// 当前商品的剩余时间，用于倒计时显示
+        /// </summary>
         public int RemainingTime
         {
             get => _remainingTime;
@@ -97,6 +120,9 @@ namespace ImpulseLive.WPF.ViewModels
             }
         }
 
+        /// <summary>
+        /// 当前游戏回合数
+        /// </summary>
         public int Round
         {
             get => _round;
@@ -110,16 +136,39 @@ namespace ImpulseLive.WPF.ViewModels
             }
         }
 
+        /// <summary>
+        /// 命令定义：购买商品
+        /// </summary>
         public ICommand BuyCommand { get; }
+        
+        /// <summary>
+        /// 命令定义：加入购物车（犹豫）
+        /// </summary>
         public ICommand HesitateCommand { get; }
+        
+        /// <summary>
+        /// 命令定义：拒绝购买
+        /// </summary>
         public ICommand RefuseCommand { get; }
+        
+        /// <summary>
+        /// 命令定义：开始游戏
+        /// </summary>
         public ICommand StartGameCommand { get; }
+        
+        /// <summary>
+        /// 命令定义：返回菜单
+        /// </summary>
         public ICommand ReturnToMenuCommand { get; }
 
-        private readonly ProductFactory _productFactory;
-        private readonly DecisionService _decisionService;
-        private readonly ResultAnalyzer _resultAnalyzer;
+        // 服务依赖
+        private readonly ProductFactory _productFactory;      // 商品生成服务
+        private readonly DecisionService _decisionService;    // 决策处理服务
+        private readonly ResultAnalyzer _resultAnalyzer;      // 结果分析服务
 
+        /// <summary>
+        /// 属性变更事件，用于通知UI更新
+        /// </summary>
         public event PropertyChangedEventHandler? PropertyChanged;
 
         public GameViewModel()

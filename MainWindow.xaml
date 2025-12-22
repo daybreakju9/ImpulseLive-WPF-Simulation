@@ -6,7 +6,7 @@
         xmlns:local="clr-namespace:ImpulseLive.WPF"
         xmlns:vm="clr-namespace:ImpulseLive.WPF.ViewModels"
         mc:Ignorable="d"
-        Title="直播间冲动消费挑战" Height="600" Width="900"
+        Title="直播间冲动消费挑战" Height="640" Width="960"
         WindowStartupLocation="CenterScreen">
     <Window.Resources>
         <local:BooleanToYesNoConverter x:Key="BooleanToYesNoConverter"/>
@@ -23,15 +23,53 @@
     <Grid Background="#2C3E50">
         <!-- 菜单视图 - 确保始终可见 -->
         <Grid Name="MenuGrid" Visibility="Visible">
-            <StackPanel HorizontalAlignment="Center" VerticalAlignment="Center" Background="#2C3E50">
-                <TextBlock Text="直播间冲动消费挑战" FontSize="48" FontWeight="Bold" Foreground="#ECF0F1" TextAlignment="Center" Margin="0,0,0,20"/>
-                <TextBlock Text="体验数字经济中的消费心理" FontSize="24" Foreground="#BDC3C7" TextAlignment="Center" Margin="0,0,0,20"/>
+            <StackPanel HorizontalAlignment="Center" VerticalAlignment="Center" Background="#2C3E50" Width="700" MaxHeight="500">
+                <!-- 标题部分 -->
+                <TextBlock Text="直播间冲动消费挑战" FontSize="48" FontWeight="Bold" Foreground="#ECF0F1" TextAlignment="Center" Margin="0,0,0,10"/>
+                <TextBlock Text="体验数字经济中的消费心理机制" FontSize="22" Foreground="#BDC3C7" TextAlignment="Center" Margin="0,0,0,20"/>
+                
+                <!-- 游戏说明卡片 -->
+                <Border Background="#34495E" CornerRadius="10" Padding="20" Margin="0,0,0,20" Effect="{StaticResource CardShadow}">
+                    <StackPanel>
+                        <TextBlock Text="🎮 游戏说明" FontSize="18" FontWeight="Bold" Foreground="#ECF0F1" Margin="0,0,0,10"/>
+                        <TextBlock Text="在这个游戏中，你将体验模拟的直播间购物场景，面对各种商品和营销手段，做出消费决策。" FontSize="14" Foreground="#BDC3C7" TextWrapping="Wrap" Margin="0,0,0,5"/>
+                        <TextBlock Text="游戏结束后，系统将对你的决策进行分析，帮助你理解直播带货中的各种消费心理机制。" FontSize="14" Foreground="#BDC3C7" TextWrapping="Wrap"/>
+                    </StackPanel>
+                </Border>
+                
+                <!-- 理论支撑卡片 -->
+                <Border Background="#34495E" CornerRadius="10" Padding="20" Margin="0,0,0,20" Effect="{StaticResource CardShadow}">
+                    <StackPanel>
+                        <TextBlock Text="📚 理论支撑" FontSize="18" FontWeight="Bold" Foreground="#ECF0F1" Margin="0,0,0,10"/>
+                        <StackPanel Orientation="Horizontal" Margin="0,0,0,5">
+                            <TextBlock Text="•" FontSize="14" Foreground="#F39C12" Margin="0,0,5,0"/>
+                            <TextBlock Text="稀缺效应与倒计时压力" FontSize="14" Foreground="#BDC3C7"/>
+                        </StackPanel>
+                        <StackPanel Orientation="Horizontal" Margin="0,0,0,5">
+                            <TextBlock Text="•" FontSize="14" Foreground="#F39C12" Margin="0,0,5,0"/>
+                            <TextBlock Text="从众心理与销量信息展示" FontSize="14" Foreground="#BDC3C7"/>
+                        </StackPanel>
+                        <StackPanel Orientation="Horizontal" Margin="0,0,0,5">
+                            <TextBlock Text="•" FontSize="14" Foreground="#F39C12" Margin="0,0,5,0"/>
+                            <TextBlock Text="支付痛感弱化（分期支付）" FontSize="14" Foreground="#BDC3C7"/>
+                        </StackPanel>
+                        <StackPanel Orientation="Horizontal">
+                            <TextBlock Text="•" FontSize="14" Foreground="#F39C12" Margin="0,0,5,0"/>
+                            <TextBlock Text="行为经济学视角下的非理性决策" FontSize="14" Foreground="#BDC3C7"/>
+                        </StackPanel>
+                    </StackPanel>
+                </Border>
+                
+                <!-- 开始按钮 -->
                 <Button Content="开始挑战" Click="StartGameButton_Click" FontSize="24" Width="200" Height="60"
-                        Background="#E74C3C" Foreground="White" BorderBrush="Transparent" FontWeight="Bold" Margin="0,0,0,20"/>
+                        Background="#E74C3C" Foreground="White" BorderBrush="Transparent" FontWeight="Bold" Margin="0,0,0,20"
+                        Effect="{StaticResource CardShadow}"/>
+                
+                <!-- 初始条件 -->
                 <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
                     <TextBlock Text="初始资金: $1000" FontSize="16" Foreground="#95A5A6"/>
                     <TextBlock Text=" | " FontSize="16" Foreground="#95A5A6"/>
-                    <TextBlock Text="理性值: 100" FontSize="16" Foreground="#95A5A6"/>
+                    <TextBlock Text="初始理性值: 100" FontSize="16" Foreground="#95A5A6"/>
                 </StackPanel>
             </StackPanel>
         </Grid>
@@ -73,8 +111,65 @@
                 
                 <!-- 倒计时 - 左侧 -->
                 <StackPanel Grid.Column="0" HorizontalAlignment="Center" VerticalAlignment="Center" Margin="20">
-                    <TextBlock Text="剩余时间" FontSize="24" FontWeight="Bold" Foreground="#ECF0F1" TextAlignment="Center"/>
-                    <TextBlock Text="{Binding RemainingTime}" FontSize="120" FontWeight="Bold" Foreground="#E74C3C" TextAlignment="Center"/>
+                    <TextBlock Text="⏱️ 剩余时间" FontSize="24" FontWeight="Bold" Foreground="#ECF0F1" TextAlignment="Center" Margin="0,0,0,10"/>
+                    <!-- 动态倒计时显示，随时间减少改变颜色 -->
+                    <TextBlock Text="{Binding RemainingTime}" FontSize="120" FontWeight="Bold" TextAlignment="Center" Margin="0,0,0,10">
+                        <TextBlock.Style>
+                            <Style TargetType="TextBlock">
+                                <Style.Triggers>
+                                    <DataTrigger Binding="{Binding RemainingTime}" Value="10">
+                                        <Setter Property="Foreground" Value="#E67E22"/>
+                                    </DataTrigger>
+                                    <DataTrigger Binding="{Binding RemainingTime}" Value="9">
+                                        <Setter Property="Foreground" Value="#E67E22"/>
+                                    </DataTrigger>
+                                    <DataTrigger Binding="{Binding RemainingTime}" Value="8">
+                                        <Setter Property="Foreground" Value="#E67E22"/>
+                                    </DataTrigger>
+                                    <DataTrigger Binding="{Binding RemainingTime}" Value="7">
+                                        <Setter Property="Foreground" Value="#E67E22"/>
+                                    </DataTrigger>
+                                    <DataTrigger Binding="{Binding RemainingTime}" Value="6">
+                                        <Setter Property="Foreground" Value="#E67E22"/>
+                                    </DataTrigger>
+                                    <DataTrigger Binding="{Binding RemainingTime}" Value="5">
+                                        <Setter Property="Foreground" Value="#E74C3C"/>
+                                    </DataTrigger>
+                                    <DataTrigger Binding="{Binding RemainingTime}" Value="4">
+                                        <Setter Property="Foreground" Value="#E74C3C"/>
+                                    </DataTrigger>
+                                    <DataTrigger Binding="{Binding RemainingTime}" Value="3">
+                                        <Setter Property="Foreground" Value="#E74C3C"/>
+                                    </DataTrigger>
+                                    <DataTrigger Binding="{Binding RemainingTime}" Value="2">
+                                        <Setter Property="Foreground" Value="#E74C3C"/>
+                                    </DataTrigger>
+                                    <DataTrigger Binding="{Binding RemainingTime}" Value="1">
+                                        <Setter Property="Foreground" Value="#E74C3C"/>
+                                    </DataTrigger>
+                                    <DataTrigger Binding="{Binding RemainingTime}" Value="0">
+                                        <Setter Property="Foreground" Value="#C0392B"/>
+                                    </DataTrigger>
+                                    <DataTrigger Binding="{Binding RemainingTime}" Value="10">
+                                        <Setter Property="Effect">
+                                            <Setter.Value>
+                                                <DropShadowEffect BlurRadius="10" ShadowDepth="0" Color="#E67E22" Opacity="0.7"/>
+                                            </Setter.Value>
+                                        </Setter>
+                                    </DataTrigger>
+                                    <DataTrigger Binding="{Binding RemainingTime}" Value="5">
+                                        <Setter Property="Effect">
+                                            <Setter.Value>
+                                                <DropShadowEffect BlurRadius="20" ShadowDepth="0" Color="#E74C3C" Opacity="1"/>
+                                            </Setter.Value>
+                                        </Setter>
+                                    </DataTrigger>
+                                </Style.Triggers>
+                            </Style>
+                        </TextBlock.Style>
+                    </TextBlock>
+                    <!-- 时间压力提示 -->
+                    <TextBlock Text="时间有限，立即决策！" FontSize="16" FontWeight="Bold" Foreground="#E74C3C" TextAlignment="Center"/>
                 </StackPanel>
                 
                 <!-- 商品卡片 - 右侧 -->
@@ -151,71 +246,225 @@
             </Grid>
             
             <!-- 底部按钮区域 -->
-            <StackPanel Grid.Row="2" Orientation="Horizontal" Margin="20" HorizontalAlignment="Center">
+            <StackPanel Grid.Row="2" Orientation="Horizontal" Margin="20" HorizontalAlignment="Center" Height="80">
+                <!-- 立即购买按钮 -->
                 <Button Content="立即购买" Command="{Binding BuyCommand}" FontSize="24" Width="200" Height="60"
-                        Background="#E74C3C" Foreground="White" BorderBrush="Transparent" FontWeight="Bold" Margin="0,0,20,0"/>
+                        Background="#E74C3C" Foreground="White" BorderBrush="Transparent" FontWeight="Bold" Margin="0,0,20,0"
+                        Effect="{StaticResource CardShadow}">
+                    <Button.Style>
+                        <Style TargetType="Button">
+                            <Setter Property="Template">
+                                <Setter.Value>
+                                    <ControlTemplate TargetType="Button">
+                                        <Border Background="{TemplateBinding Background}" CornerRadius="10" Effect="{TemplateBinding Effect}">
+                                            <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center" />
+                                        </Border>
+                                    </ControlTemplate>
+                                </Setter.Value>
+                            </Setter>
+                            <Style.Triggers>
+                                <Trigger Property="IsMouseOver" Value="True">
+                                    <Setter Property="Background" Value="#C0392B"/>
+                                    <Setter Property="RenderTransform">
+                                        <Setter.Value>
+                                            <ScaleTransform ScaleX="1.05" ScaleY="1.05"/>
+                                        </Setter.Value>
+                                    </Setter>
+                                </Trigger>
+                                <Trigger Property="IsPressed" Value="True">
+                                    <Setter Property="Background" Value="#A93226"/>
+                                    <Setter Property="RenderTransform">
+                                        <Setter.Value>
+                                            <ScaleTransform ScaleX="0.95" ScaleY="0.95"/>
+                                        </Setter.Value>
+                                    </Setter>
+                                </Trigger>
+                            </Style.Triggers>
+                        </Style>
+                    </Button.Style>
+                </Button>
+                
+                <!-- 加入购物车按钮 -->
                 <Button Content="加入购物车" Command="{Binding HesitateCommand}" IsEnabled="{Binding CanUseHesitate}" FontSize="24" Width="200" Height="60"
-                        Background="#F39C12" Foreground="White" BorderBrush="Transparent" FontWeight="Bold" Margin="0,0,20,0"/>
+                        Background="#F39C12" Foreground="White" BorderBrush="Transparent" FontWeight="Bold" Margin="0,0,20,0"
+                        Effect="{StaticResource CardShadow}">
+                    <Button.Style>
+                        <Style TargetType="Button">
+                            <Setter Property="Template">
+                                <Setter.Value>
+                                    <ControlTemplate TargetType="Button">
+                                        <Border Background="{TemplateBinding Background}" CornerRadius="10" Effect="{TemplateBinding Effect}">
+                                            <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center" />
+                                        </Border>
+                                    </ControlTemplate>
+                                </Setter.Value>
+                            </Setter>
+                            <Style.Triggers>
+                                <Trigger Property="IsMouseOver" Value="True">
+                                    <Setter Property="Background" Value="#D35400"/>
+                                    <Setter Property="RenderTransform">
+                                        <Setter.Value>
+                                            <ScaleTransform ScaleX="1.05" ScaleY="1.05"/>
+                                        </Setter.Value>
+                                    </Setter>
+                                </Trigger>
+                                <Trigger Property="IsPressed" Value="True">
+                                    <Setter Property="Background" Value="#A04000"/>
+                                    <Setter Property="RenderTransform">
+                                        <Setter.Value>
+                                            <ScaleTransform ScaleX="0.95" ScaleY="0.95"/>
+                                        </Setter.Value>
+                                    </Setter>
+                                </Trigger>
+                                <Trigger Property="IsEnabled" Value="False">
+                                    <Setter Property="Background" Value="#95A5A6"/>
+                                    <Setter Property="Effect" Value="{x:Null}"/>
+                                </Trigger>
+                            </Style.Triggers>
+                        </Style>
+                    </Button.Style>
+                </Button>
+                
+                <!-- 不买按钮 -->
                 <Button Content="不买" Command="{Binding RefuseCommand}" FontSize="24" Width="200" Height="60"
-                        Background="#2ECC71" Foreground="White" BorderBrush="Transparent" FontWeight="Bold"/>
+                        Background="#2ECC71" Foreground="White" BorderBrush="Transparent" FontWeight="Bold"
+                        Effect="{StaticResource CardShadow}">
+                    <Button.Style>
+                        <Style TargetType="Button">
+                            <Setter Property="Template">
+                                <Setter.Value>
+                                    <ControlTemplate TargetType="Button">
+                                        <Border Background="{TemplateBinding Background}" CornerRadius="10" Effect="{TemplateBinding Effect}">
+                                            <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center" />
+                                        </Border>
+                                    </ControlTemplate>
+                                </Setter.Value>
+                            </Setter>
+                            <Style.Triggers>
+                                <Trigger Property="IsMouseOver" Value="True">
+                                    <Setter Property="Background" Value="#27AE60"/>
+                                    <Setter Property="RenderTransform">
+                                        <Setter.Value>
+                                            <ScaleTransform ScaleX="1.05" ScaleY="1.05"/>
+                                        </Setter.Value>
+                                    </Setter>
+                                </Trigger>
+                                <Trigger Property="IsPressed" Value="True">
+                                    <Setter Property="Background" Value="#1E8449"/>
+                                    <Setter Property="RenderTransform">
+                                        <Setter.Value>
+                                            <ScaleTransform ScaleX="0.95" ScaleY="0.95"/>
+                                        </Setter.Value>
+                                    </Setter>
+                                </Trigger>
+                            </Style.Triggers>
+                        </Style>
+                    </Button.Style>
+                </Button>
             </StackPanel>
         </Grid>
         
         <!-- 结果视图 -->
         <Grid Name="ResultGrid" Visibility="Collapsed">
-            <StackPanel Margin="40">
-                <TextBlock Text="结算分析" FontSize="36" FontWeight="Bold" Foreground="#ECF0F1" TextAlignment="Center" Margin="0,0,0,20"/>
+            <!-- 主Grid布局，左右分栏 -->
+            <Grid Margin="40" MaxWidth="900" HorizontalAlignment="Center">
+                <!-- Grid列定义：左侧固定宽度，右侧自适应 -->
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="220"/>
+                    <ColumnDefinition Width="*" MinWidth="400"/>
+                </Grid.ColumnDefinitions>
                 
-                <!-- 玩家统计 -->
-                <Border Background="#34495E" CornerRadius="10" Padding="15" Margin="0,0,0,15">
+                <!-- 结果标题，跨两列 -->
+                <TextBlock Grid.ColumnSpan="2" Text="结算分析报告" FontSize="36" FontWeight="Bold" Foreground="#ECF0F1" TextAlignment="Center" Margin="0,0,0,30"/>
+                
+                <!-- 左侧：垂直排列的玩家数据统计 -->
+                <Border Grid.Column="0" Background="#34495E" CornerRadius="10" Padding="20" Margin="0,0,20,0" Effect="{StaticResource CardShadow}">
                     <StackPanel>
-                        <TextBlock Text="玩家数据" FontSize="20" FontWeight="Bold" Foreground="#ECF0F1" Margin="0,0,0,10"/>
-                        <Grid>
-                            <Grid.ColumnDefinitions>
-                                <ColumnDefinition Width="*"/>
-                                <ColumnDefinition Width="*"/>
-                                <ColumnDefinition Width="*"/>
-                            </Grid.ColumnDefinitions>
-                            <StackPanel Grid.Column="0">
-                                <TextBlock Text="剩余资金" FontSize="14" Foreground="#BDC3C7" Margin="0,0,0,3"/>
-                                <TextBlock Text="{Binding Player.Money, StringFormat='${0}'}" FontSize="20" Foreground="#2ECC71" Margin="0,0,0,10"/>
-                                <TextBlock Text="理性值" FontSize="14" Foreground="#BDC3C7" Margin="0,0,0,3"/>
-                                <TextBlock Text="{Binding Player.Rationality}" FontSize="20" Foreground="#3498DB"/>
-                            </StackPanel>
-                            <StackPanel Grid.Column="1">
-                                <TextBlock Text="购买次数" FontSize="14" Foreground="#BDC3C7" Margin="0,0,0,3"/>
-                                <TextBlock Text="{Binding Player.BuyCount}" FontSize="20" Foreground="#E74C3C" Margin="0,0,0,10"/>
-                                <TextBlock Text="犹豫次数" FontSize="14" Foreground="#BDC3C7" Margin="0,0,0,3"/>
-                                <TextBlock Text="{Binding Player.HesitateCount}" FontSize="20" Foreground="#F39C12"/>
-                            </StackPanel>
-                            <StackPanel Grid.Column="2">
-                                <TextBlock Text="拒绝次数" FontSize="14" Foreground="#BDC3C7" Margin="0,0,0,3"/>
-                                <TextBlock Text="{Binding Player.RefuseCount}" FontSize="20" Foreground="#2ECC71" Margin="0,0,0,10"/>
-                                <TextBlock Text="欲望值" FontSize="14" Foreground="#BDC3C7" Margin="0,0,0,3"/>
-                                <TextBlock Text="{Binding Player.Desire}" FontSize="20" Foreground="#E74C3C"/>
-                            </StackPanel>
-                        </Grid>
+                        <TextBlock Text="📊 玩家数据统计" FontSize="20" FontWeight="Bold" Foreground="#ECF0F1" Margin="0,0,0,15"/>
+                        
+                        <!-- 垂直排列的玩家数据 -->
+                        <StackPanel Margin="0,0,0,15">
+                            <TextBlock Text="剩余资金" FontSize="14" Foreground="#BDC3C7" Margin="0,0,0,3"/>
+                            <TextBlock Text="{Binding Player.Money, StringFormat='${0}'}" FontSize="24" FontWeight="Bold" Foreground="#2ECC71"/>
+                        </StackPanel>
+                        
+                        <StackPanel Margin="0,0,0,15">
+                            <TextBlock Text="理性值" FontSize="14" Foreground="#BDC3C7" Margin="0,0,0,3"/>
+                            <TextBlock Text="{Binding Player.Rationality}" FontSize="24" FontWeight="Bold" Foreground="#3498DB"/>
+                        </StackPanel>
+                        
+                        <StackPanel Margin="0,0,0,15">
+                            <TextBlock Text="购买次数" FontSize="14" Foreground="#BDC3C7" Margin="0,0,0,3"/>
+                            <TextBlock Text="{Binding Player.BuyCount}" FontSize="24" FontWeight="Bold" Foreground="#E74C3C"/>
+                        </StackPanel>
+                        
+                        <StackPanel Margin="0,0,0,15">
+                            <TextBlock Text="犹豫次数" FontSize="14" Foreground="#BDC3C7" Margin="0,0,0,3"/>
+                            <TextBlock Text="{Binding Player.HesitateCount}" FontSize="24" FontWeight="Bold" Foreground="#F39C12"/>
+                        </StackPanel>
+                        
+                        <StackPanel Margin="0,0,0,15">
+                            <TextBlock Text="拒绝次数" FontSize="14" Foreground="#BDC3C7" Margin="0,0,0,3"/>
+                            <TextBlock Text="{Binding Player.RefuseCount}" FontSize="24" FontWeight="Bold" Foreground="#2ECC71"/>
+                        </StackPanel>
+                        
+                        <StackPanel>
+                            <TextBlock Text="欲望值" FontSize="14" Foreground="#BDC3C7" Margin="0,0,0,3"/>
+                            <TextBlock Text="{Binding Player.Desire}" FontSize="24" FontWeight="Bold" Foreground="#E74C3C"/>
+                        </StackPanel>
                     </StackPanel>
                 </Border>
                 
-                <!-- 分析结论 -->
-                <Border Background="#34495E" CornerRadius="10" Padding="15" Margin="0,0,0,15">
-                    <StackPanel>
-                        <TextBlock Text="心理分析" FontSize="20" FontWeight="Bold" Foreground="#ECF0F1" Margin="0,0,0,10"/>
-                        <ItemsControl ItemsSource="{Binding AnalysisResults}">
-                            <ItemsControl.ItemTemplate>
-                                <DataTemplate>
-                                    <TextBlock Text="{Binding}" FontSize="16" Foreground="#F39C12" Margin="3"/>
-                                </DataTemplate>
-                            </ItemsControl.ItemTemplate>
-                        </ItemsControl>
+                <!-- 右侧：反思引导和消费行为分析 -->
+                <StackPanel Grid.Column="1">
+                    <!-- 反思引导卡片 -->
+                    <Border Background="#3498DB" CornerRadius="10" Padding="20" Margin="0,0,0,20" Effect="{StaticResource CardShadow}">
+                        <StackPanel>
+                            <TextBlock Text="🤔 反思引导" FontSize="20" FontWeight="Bold" Foreground="White" Margin="0,0,0,10"/>
+                            <TextBlock Text="通过本次游戏体验，你可以反思以下问题：" FontSize="14" Foreground="White" TextWrapping="Wrap" Margin="0,0,0,5"/>
+                            <StackPanel Orientation="Horizontal" Margin="0,0,0,3">
+                                <TextBlock Text="•" FontSize="14" Foreground="White" Margin="0,0,5,0"/>
+                                <TextBlock Text="你在游戏中受到了哪些营销手段的影响？" FontSize="14" Foreground="White"/>
+                            </StackPanel>
+                            <StackPanel Orientation="Horizontal" Margin="0,0,0,3">
+                                <TextBlock Text="•" FontSize="14" Foreground="White" Margin="0,0,5,0"/>
+                                <TextBlock Text="你的消费决策是理性的还是非理性的？" FontSize="14" Foreground="White"/>
+                            </StackPanel>
+                            <StackPanel Orientation="Horizontal" Margin="0,0,0,3">
+                                <TextBlock Text="•" FontSize="14" Foreground="White" Margin="0,0,5,0"/>
+                                <TextBlock Text="在现实生活中，你会如何避免冲动消费？" FontSize="14" Foreground="White"/>
+                            </StackPanel>
+                            <StackPanel Orientation="Horizontal">
+                                <TextBlock Text="•" FontSize="14" Foreground="White" Margin="0,0,5,0"/>
+                                <TextBlock Text="直播带货中的哪些机制容易引发冲动消费？" FontSize="14" Foreground="White"/>
+                            </StackPanel>
+                        </StackPanel>
+                    </Border>
+                    
+                    <!-- 分析结论 -->
+                    <Border Background="#34495E" CornerRadius="10" Padding="15" Margin="0,0,0,20" Effect="{StaticResource CardShadow}">
+                        <StackPanel>
+                            <TextBlock Text="🧠 消费行为分析" FontSize="18" FontWeight="Bold" Foreground="#ECF0F1" Margin="0,0,0,12"/>
+                            <ItemsControl ItemsSource="{Binding AnalysisResults}">
+                                <ItemsControl.ItemTemplate>
+                                    <DataTemplate>
+                                        <Border Background="#2C3E50" CornerRadius="5" Padding="8" Margin="0,0,0,6">
+                                            <TextBlock Text="{Binding}" FontSize="14" Foreground="#F39C12" TextWrapping="Wrap"/>
+                                        </Border>
+                                    </DataTemplate>
+                                </ItemsControl.ItemTemplate>
+                            </ItemsControl>
+                        </StackPanel>
+                    </Border>
+                    
+                    <!-- 返回菜单按钮 - 放在StackPanel内，作为右侧区域的一部分 -->
+                    <StackPanel HorizontalAlignment="Center" Margin="0,60,0,30">
+                        <Button Content="返回菜单" Command="{Binding ReturnToMenuCommand}" FontSize="20" Width="180" Height="50"
+                                Background="#3498DB" Foreground="White" BorderBrush="Transparent" FontWeight="Bold"
+                                Effect="{StaticResource CardShadow}"/>
                     </StackPanel>
-                </Border>
-                
-                <!-- 返回菜单按钮 -->
-                <Button Content="返回菜单" Command="{Binding ReturnToMenuCommand}" FontSize="20" Width="180" Height="50"
-                        Background="#3498DB" Foreground="White" BorderBrush="Transparent" FontWeight="Bold" HorizontalAlignment="Center" Margin="0,20,0,0"/>
-            </StackPanel>
+                </StackPanel>
+            </Grid>
         </Grid>
     </Grid>
 </Window>
