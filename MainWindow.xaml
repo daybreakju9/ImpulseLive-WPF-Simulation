@@ -31,7 +31,7 @@
                 <!-- 游戏说明卡片 -->
                 <Border Background="#34495E" CornerRadius="10" Padding="20" Margin="0,0,0,20" Effect="{StaticResource CardShadow}">
                     <StackPanel>
-                        <TextBlock Text="🎮 游戏说明" FontSize="18" FontWeight="Bold" Foreground="#ECF0F1" Margin="0,0,0,10"/>
+                        <TextBlock Text="🎮 别笑，你来你也过不了第二关！" FontSize="18" FontWeight="Bold" Foreground="#ECF0F1" Margin="0,0,0,10"/>
                         <TextBlock Text="在这个游戏中，你将体验模拟的直播间购物场景，面对各种商品和营销手段，做出消费决策。" FontSize="14" Foreground="#BDC3C7" TextWrapping="Wrap" Margin="0,0,0,5"/>
                         <TextBlock Text="游戏结束后，系统将对你的决策进行分析，帮助你理解直播带货中的各种消费心理机制。" FontSize="14" Foreground="#BDC3C7" TextWrapping="Wrap"/>
                     </StackPanel>
